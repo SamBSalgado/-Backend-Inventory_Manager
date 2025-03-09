@@ -37,17 +37,6 @@ public class ProductoService {
     return "Producto agregado correctamente.";
   }
 
-  //Actualizar stock
-  public String actualizarStock(int id, int nuevoStock) {
-    for (Producto producto : productos) {
-      if (producto.getId() == id) {
-        producto.setQuantityInStock(nuevoStock);
-        return "Stock actualizado correctamente.";
-      }
-    }
-    return "Producto no encontrado.";
-  }
-
   //Editar producto
   public String editarProducto(int id, Producto productoActualizado) {
     for (Producto producto : productos) {
@@ -68,6 +57,16 @@ public class ProductoService {
         }
 
         return "Producto actualizado correctamente.";
+      }
+    }
+    return "Producto no encontrado.";
+  }
+
+  public String noStock(int id) {
+    for (Producto producto : productos) {
+      if (producto.getId() == id) {
+        producto.setQuantityInStock(0);
+        return "Stock actualizado correctamente.";
       }
     }
     return "Producto no encontrado.";
