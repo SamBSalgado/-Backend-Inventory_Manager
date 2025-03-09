@@ -25,6 +25,11 @@ public class ProductoService {
 
   //Agregar un nuevo producto
   public String agregarProducto(Producto nuevProducto) {
+    for (Producto producto : productos) {
+      if (producto.getName().equalsIgnoreCase(nuevProducto.getName())) {
+        return "El producto " + nuevProducto.getName() + " ya existe.";
+      }
+    }
     if (!esCategoriaValida(nuevProducto.getCategory())) {
       return "Categoría no válida.";
     }
