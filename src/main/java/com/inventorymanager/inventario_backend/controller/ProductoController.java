@@ -41,12 +41,13 @@ public class ProductoController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> actualizarStock(@PathVariable int id, @RequestBody int nuevoStock) {
-    String resultado = productoService.actualizarStock(id, nuevoStock);
-    if (resultado.equals("Stock actualizado correctamente.")) {
+  public ResponseEntity<String> editarProducto(@PathVariable int id, @RequestBody Producto productoActualizado) {
+    String resultado = productoService.editarProducto(id, productoActualizado);
+
+    if (resultado.equals("Producto actualizado correctamente.")) {
       return ResponseEntity.ok(resultado);
     } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resultado);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultado);
     }
   }
 
