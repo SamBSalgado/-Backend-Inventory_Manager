@@ -41,21 +41,23 @@ public class ProductoService {
   public String editarProducto(int id, Producto productoActualizado) {
     for (Producto producto : productos) {
       if (producto.getId() == id) {
-        producto.setName(productoActualizado.getName());
-        producto.setCategory(productoActualizado.getCategory());
-        producto.setQuantityInStock(productoActualizado.getQuantityInStock());
-        producto.setUnitPrice(productoActualizado.getUnitPrice());
-
         //validación de caducidad en food
         if ("food".equalsIgnoreCase(productoActualizado.getCategory())) {
           if (productoActualizado.getExpirationDate() == null) {
             return "El producto categoría food debe tener fecha de caducidad";
           }
+          producto.setName(productoActualizado.getName());
+          producto.setCategory(productoActualizado.getCategory());
+          producto.setQuantityInStock(productoActualizado.getQuantityInStock());
+          producto.setUnitPrice(productoActualizado.getUnitPrice());
           producto.setExpirationDate(productoActualizado.getExpirationDate());
         } else {
+          producto.setName(productoActualizado.getName());
+          producto.setCategory(productoActualizado.getCategory());
+          producto.setQuantityInStock(productoActualizado.getQuantityInStock());
+          producto.setUnitPrice(productoActualizado.getUnitPrice());
           producto.setExpirationDate(null);
         }
-
         return "Producto actualizado correctamente.";
       }
     }
