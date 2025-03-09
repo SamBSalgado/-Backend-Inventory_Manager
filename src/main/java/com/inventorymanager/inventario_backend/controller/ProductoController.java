@@ -61,6 +61,16 @@ public class ProductoController {
     }
   }
 
+  @PutMapping("{id}/instock")
+  public ResponseEntity<String> inStock(@PathVariable int id) {
+    String resultado = productoService.inStock(id);
+    if (resultado.equals("Stock reestablecido a 10.")) {
+      return ResponseEntity.ok(resultado);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resultado);
+    }
+  }
+
   @DeleteMapping("/{id}")
   public ResponseEntity<String> eliminarProducto(@PathVariable int id) {
     String resultado = productoService.eliminarProducto(id);

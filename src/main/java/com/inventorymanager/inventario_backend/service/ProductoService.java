@@ -72,6 +72,16 @@ public class ProductoService {
     return "Producto no encontrado.";
   }
 
+  public String inStock(int id) {
+    for (Producto producto : productos) {
+      if (producto.getId() == id) {
+        producto.setQuantityInStock(10);
+        return "Stock reestablecido a 10.";
+      }
+    }
+    return "Producto no encontrado.";
+  }
+
   //Eliminar producto
   public String eliminarProducto(int id) {
     Producto productoAEliminar = null;
