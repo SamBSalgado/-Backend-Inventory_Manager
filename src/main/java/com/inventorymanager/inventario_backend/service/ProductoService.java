@@ -2,6 +2,7 @@ package com.inventorymanager.inventario_backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,15 @@ public class ProductoService {
     return productos;
   }
 
+  //Filtrar productos
+  public List<Producto> filtrarProductos(String name, String category, String availability) {
+    return productos.stream()
+      .filter(producto -> (name == null || name.isEmpty() || producto.getName().equalsIgnoreCase(name)))
+      .filter(producto -> (category == null || category.isEmpty() || producto.getCategory().equalsIgnoreCase(category)))
+      .filter(producto -> (availability == null || availability.isEmpty() || producto.getQuantityInStock() > 0))
+      .collect(Collectors.toList());
+  }
+
   //Agregar un nuevo producto
   public String agregarProducto(Producto nuevProducto) {
     for (Producto producto : productos) {
@@ -33,7 +43,7 @@ public class ProductoService {
     if ("food".equalsIgnoreCase(nuevProducto.getCategory()) && nuevProducto.getExpirationDate() == null) {
       return "Los productos de categoría food deben tener fecha de caducidad.";
     }
-    
+
     nuevProducto.setId(idCounter++);
     productos.add(nuevProducto);
     return "Producto agregado correctamente.";

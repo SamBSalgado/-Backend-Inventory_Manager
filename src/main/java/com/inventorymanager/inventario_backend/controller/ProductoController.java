@@ -1,4 +1,5 @@
 package com.inventorymanager.inventario_backend.controller;
+import java.util.Collections;
 import java.util.List;
 
 import com.inventorymanager.inventario_backend.model.Producto;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,6 +30,25 @@ public class ProductoController {
   @GetMapping("/all")
   public List<Producto> obtenerProductos() {
     return productoService.obtenerProductos();
+  }
+
+  @GetMapping
+  public ResponseEntity<List<Producto>> filtrarProductos(
+    @RequestParam(required = false) String name,
+    @RequestParam(required = false) String category,
+    @RequestParam(required = false) String availability) {
+
+    if ((name == null || name.isEmpty()) && 
+      (category == null || category.isEmpty()) &&
+      (availability == null || availability.isEmpty())) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
+    }
+
+    List<Producto> resultado = productoService.filtrarProductos(name, category, availability);
+    if (resultado.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resultado);
+    }
+    return ResponseEntity.ok(resultado);
   }
 
   @PostMapping
