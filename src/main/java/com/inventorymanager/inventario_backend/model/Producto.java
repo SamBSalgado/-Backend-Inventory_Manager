@@ -3,7 +3,7 @@ package com.inventorymanager.inventario_backend.model;
 import java.time.LocalDate;
 
 public class Producto {
-  private int id;
+  private Long id;
   private String name;
   private String category;
   private int quantityInStock;
@@ -12,28 +12,9 @@ public class Producto {
 
   public Producto(){}
 
-  //Constructor que incluye fecha de caducidad
-  public Producto(int id, String name, String category, int quantityInStock, double unitPrice, LocalDate expirationDate) {
-    this.id = id;
-    this.name = name;
-    this.category = category;
-    this.quantityInStock = quantityInStock;
-    this.unitPrice = unitPrice;
-    this.expirationDate = expirationDate;
-  }
-
-  //Constructor sin fecha de caducidad
-  public Producto(int id, String name, String category, int quantityInStock, double unitPrice) {
-    this.id = id;
-    this.name = name;
-    this.category = category;
-    this.quantityInStock = quantityInStock;
-    this.unitPrice = unitPrice;
-  }
-
   //getters y setters
-  public int getId() {return id;}
-  public void setId(int id) {this.id = id;}
+  public Long getId() {return id;}
+  public void setId(Long id) {this.id = id;}
 
   public String getName() {return name;}
   public void setName(String name) {this.name = name;}

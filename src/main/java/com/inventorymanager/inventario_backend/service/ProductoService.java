@@ -10,13 +10,9 @@ import com.inventorymanager.inventario_backend.model.Producto;
 @Service
 public class ProductoService {
   private List<Producto> productos = new ArrayList<>();
+  private static Long idCounter = 1L;
 
-  //Constructor para inicializar algunos productos de base
-  public ProductoService() {
-    productos.add(new Producto(1, "Botella de agua", "food", 10, 10));
-    productos.add(new Producto(2, "Monitor", "electronics", 4, 4000.50));
-    productos.add(new Producto(3, "Jeans", "clothing", 50, 499.99));
-  }
+  public ProductoService() {}
 
   //Obtener todos los productos
   public List<Producto> obtenerProductos() {
@@ -37,7 +33,8 @@ public class ProductoService {
     if ("food".equalsIgnoreCase(nuevProducto.getCategory()) && nuevProducto.getExpirationDate() == null) {
       return "Los productos de categoría food deben tener fecha de caducidad.";
     }
-
+    
+    nuevProducto.setId(idCounter++);
     productos.add(nuevProducto);
     return "Producto agregado correctamente.";
   }
