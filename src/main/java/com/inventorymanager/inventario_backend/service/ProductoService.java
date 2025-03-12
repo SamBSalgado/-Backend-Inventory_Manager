@@ -21,11 +21,20 @@ public class ProductoService {
   }
 
   //Filtrar productos
-  public List<Producto> filtrarProductos(String name, String category, String availability) {
+  public List<Producto> filtrarProductos(String name, List<String> categories, String availability) {
     return productos.stream()
-      .filter(producto -> (name == null || name.isEmpty() || producto.getName().equalsIgnoreCase(name)))
-      .filter(producto -> (category == null || category.isEmpty() || producto.getCategory().equalsIgnoreCase(category)))
-      .filter(producto -> (availability == null || availability.isEmpty() || producto.getQuantityInStock() > 0))
+      .filter(producto -> (name == null || name.isEmpty() || producto.getName().toLowerCase().contains(name.toLowerCase())))
+      .filter(producto -> (categories == null || categories.isEmpty() || categories.stream().anyMatch(cat -> producto.getCategory().equalsIgnoreCase(cat))))
+      .filter(producto -> {
+        if (availability == null || availability.isEmpty() || "all".equalsIgnoreCase(availability)) {
+          return true;
+        } else if ("available".equalsIgnoreCase(availability)) {
+          return producto.getQuantityInStock() > 0;
+        } else if ("unavailable".equalsIgnoreCase(availability)) {
+          return producto.getQuantityInStock() <= 0;
+        }
+        return true;
+      })
       .collect(Collectors.toList());
   }
 

@@ -1,6 +1,8 @@
 package com.inventorymanager.inventario_backend.controller;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.inventorymanager.inventario_backend.model.Producto;
 import com.inventorymanager.inventario_backend.service.ProductoService;
@@ -40,13 +42,21 @@ public class ProductoController {
     @RequestParam(required = false) String category,
     @RequestParam(required = false) String availability) {
 
-    if ((name == null || name.isEmpty()) && 
-      (category == null || category.isEmpty()) &&
-      (availability == null || availability.isEmpty())) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
+    List<String> categories = null;
+    if (category != null && !category.isEmpty()) {
+      categories = Arrays.stream(category.split(","))
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .collect(Collectors.toList());
+    } else {
+        categories = Collections.emptyList();
+      }
+
+    if ((name == null || name.isEmpty()) && categories.isEmpty() && (availability == null || availability.isEmpty())) {
+      return ResponseEntity.ok(productoService.obtenerProductos());
     }
 
-    List<Producto> resultado = productoService.filtrarProductos(name, category, availability);
+    List<Producto> resultado = productoService.filtrarProductos(name, categories, availability);
     if (resultado.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resultado);
     }
