@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.inventorymanager.inventario_backend.model.InventoryMetrics;
 import com.inventorymanager.inventario_backend.model.Producto;
 
 @Service
@@ -122,6 +123,52 @@ public class ProductoService {
     } else {
       return "Producto no encontrado.";
     }
+  }
+
+  //Calcular métricas
+  public List<InventoryMetrics> obtenerMetricas() {
+    List<String> categorias = productos.stream()
+      .map(Producto::getCategory)
+      .distinct()
+      .collect(Collectors.toList());
+
+      List<InventoryMetrics> metrics = new ArrayList<>();
+
+      for (String categoria : categorias) {
+        List<Producto> productCategories = productos.stream()
+          .filter(p -> p.getCategory().equals(categoria))
+          .collect(Collectors.toList());
+
+        long totalProducts = productCategories.size();
+
+        List<Producto> inStockProducts = productCategories.stream()
+          .filter(p -> p.getQuantityInStock() > 0)
+          .collect(Collectors.toList());
+
+        int totalInStockUnits = inStockProducts.stream()
+          .mapToInt(Producto::getQuantityInStock)
+          .sum();
+
+        double totalInStockValue = inStockProducts.stream()
+          .mapToDouble(p -> p.getQuantityInStock()*p.getUnitPrice())
+          .sum();
+
+        double avgPrice = 0;
+        if (totalInStockUnits > 0) {
+          avgPrice = totalInStockValue / totalInStockUnits;
+        }
+
+        InventoryMetrics metric = new InventoryMetrics(
+          categoria,
+          totalProducts,
+          totalInStockUnits,
+          totalInStockValue,
+          avgPrice
+        );
+
+        metrics.add(metric);
+      }
+      return metrics;
   }
 
   private boolean esCategoriaValida(String categoria) {

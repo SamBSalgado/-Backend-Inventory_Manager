@@ -1,4 +1,5 @@
 /Users/francisco.becerra/Documents/Spark/First_BreakableToy/Backend/src/main/java/com/inventorymanager/inventario_backend/InventarioBackendApplication.java
 /Users/francisco.becerra/Documents/Spark/First_BreakableToy/Backend/src/main/java/com/inventorymanager/inventario_backend/controller/ProductoController.java
+/Users/francisco.becerra/Documents/Spark/First_BreakableToy/Backend/src/main/java/com/inventorymanager/inventario_backend/model/InventoryMetrics.java
 /Users/francisco.becerra/Documents/Spark/First_BreakableToy/Backend/src/main/java/com/inventorymanager/inventario_backend/model/Producto.java
 /Users/francisco.becerra/Documents/Spark/First_BreakableToy/Backend/src/main/java/com/inventorymanager/inventario_backend/service/ProductoService.java

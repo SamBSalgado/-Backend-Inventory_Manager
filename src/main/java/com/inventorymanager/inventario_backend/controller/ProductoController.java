@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.inventorymanager.inventario_backend.model.InventoryMetrics;
 import com.inventorymanager.inventario_backend.model.Producto;
 import com.inventorymanager.inventario_backend.service.ProductoService;
 
@@ -31,9 +32,14 @@ public class ProductoController {
     this.productoService = productoService;
   }
   
-  @GetMapping("/all")
-  public List<Producto> obtenerProductos() {
-    return productoService.obtenerProductos();
+  @GetMapping("/metrics")
+  public ResponseEntity<List<InventoryMetrics>> obtenerMetricas() {
+    List<InventoryMetrics> metrics = productoService.obtenerMetricas();
+
+    if (metrics.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body(metrics);
+    }
+    return ResponseEntity.ok(metrics);
   }
 
   @GetMapping
