@@ -2,8 +2,6 @@ package com.inventorymanager.inventario_backend.model;
 
 import java.time.LocalDate;
 
-import org.springframework.cglib.core.Local;
-
 public class Producto {
   private Long id;
   private String name;
