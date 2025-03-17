@@ -2,6 +2,8 @@ package com.inventorymanager.inventario_backend.model;
 
 import java.time.LocalDate;
 
+import org.springframework.cglib.core.Local;
+
 public class Producto {
   private Long id;
   private String name;
@@ -9,8 +11,13 @@ public class Producto {
   private int quantityInStock;
   private double unitPrice;
   private LocalDate expirationDate;
+  private LocalDate creationDate;
+  private LocalDate updateDate;
 
-  public Producto(){}
+  public Producto(){
+    this.creationDate = LocalDate.now();
+    this.updateDate = LocalDate.now();
+  }
 
   //getters y setters
   public Long getId() {return id;}
@@ -30,4 +37,14 @@ public class Producto {
 
   public LocalDate getExpirationDate() {return expirationDate;}
   public void setExpirationDate(LocalDate expirationDate) {this.expirationDate = expirationDate;}
+
+  public LocalDate getCreationDate() {return creationDate;}
+  public void setCreationDate(LocalDate creationDate) {this.creationDate = creationDate;}
+
+  public LocalDate getUpdateDate() {return updateDate;}
+  public void setUpdateDate(LocalDate updateDate) {this.updateDate = updateDate;}
+
+  public void updateModificationDate() {
+    this.updateDate = LocalDate.now();
+  }
 }

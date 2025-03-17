@@ -1,11 +1,11 @@
 package com.inventorymanager.inventario_backend.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-
 import com.inventorymanager.inventario_backend.model.InventoryMetrics;
 import com.inventorymanager.inventario_backend.model.Producto;
 
@@ -14,7 +14,8 @@ public class ProductoService {
   private List<Producto> productos = new ArrayList<>();
   private static Long idCounter = 1L;
 
-  public ProductoService() {}
+  public ProductoService() {
+  }
 
   //Obtener todos los productos
   public List<Producto> obtenerProductos() {
@@ -54,6 +55,13 @@ public class ProductoService {
       return "Los productos de categoría food deben tener fecha de caducidad.";
     }
 
+    if (nuevProducto.getCreationDate() == null) {
+      nuevProducto.setCreationDate(LocalDate.now());
+    }
+    if (nuevProducto.getUpdateDate() == null) {
+      nuevProducto.setUpdateDate(LocalDate.now());
+    }
+
     nuevProducto.setId(idCounter++);
     productos.add(nuevProducto);
     return "Producto agregado correctamente.";
@@ -80,6 +88,7 @@ public class ProductoService {
           producto.setUnitPrice(productoActualizado.getUnitPrice());
           producto.setExpirationDate(null);
         }
+        producto.setUpdateDate(LocalDate.now());
         return "Producto actualizado correctamente.";
       }
     }
@@ -90,6 +99,7 @@ public class ProductoService {
     for (Producto producto : productos) {
       if (producto.getId() == id) {
         producto.setQuantityInStock(0);
+        producto.setUpdateDate(LocalDate.now());
         return "Stock actualizado correctamente.";
       }
     }
@@ -100,6 +110,7 @@ public class ProductoService {
     for (Producto producto : productos) {
       if (producto.getId() == id) {
         producto.setQuantityInStock(10);
+        producto.setUpdateDate(LocalDate.now());
         return "Stock reestablecido a 10.";
       }
     }
