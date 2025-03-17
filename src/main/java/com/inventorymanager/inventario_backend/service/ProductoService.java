@@ -168,6 +168,34 @@ public class ProductoService {
 
         metrics.add(metric);
       }
+
+      long totalProductsGlobal = productos.size();
+      List<Producto> inStockProductsGlobal  = productos.stream()
+        .filter(p -> p.getQuantityInStock() > 0)
+        .collect(Collectors.toList());
+
+      int totalInStockUnitsGlobal = inStockProductsGlobal.stream()
+        .mapToInt(Producto::getQuantityInStock)
+        .sum();
+        
+      double totalInStockValueGlobal = inStockProductsGlobal.stream()
+        .mapToDouble(p -> p.getQuantityInStock()*p.getUnitPrice())
+        .sum();
+
+      double avgPriceGlobal = 0;
+      if (totalInStockUnitsGlobal > 0) {
+        avgPriceGlobal = totalInStockValueGlobal / totalInStockUnitsGlobal;
+      }
+
+      InventoryMetrics metricaGlobal = new InventoryMetrics(
+        "Total",
+        totalProductsGlobal,
+        totalInStockUnitsGlobal,
+        totalInStockValueGlobal,
+        avgPriceGlobal
+      );
+
+      metrics.add(metricaGlobal);
       return metrics;
   }
 
