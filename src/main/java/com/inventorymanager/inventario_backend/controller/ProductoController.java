@@ -42,6 +42,15 @@ public class ProductoController {
     return ResponseEntity.ok(metrics);
   }
 
+  @GetMapping("/categories")
+  public ResponseEntity<List<String>> obtenerCategorias() {
+    List<String> categorias = productoService.obtenerCategorias();
+    if (categorias.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body(categorias);
+    }
+    return ResponseEntity.ok(categorias);
+  }
+
   @GetMapping
   public ResponseEntity<List<Producto>> filtrarProductos(
     @RequestParam(required = false) String name,

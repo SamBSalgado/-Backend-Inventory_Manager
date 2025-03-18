@@ -12,9 +12,14 @@ import com.inventorymanager.inventario_backend.model.Producto;
 @Service
 public class ProductoService {
   private List<Producto> productos = new ArrayList<>();
+  private List<String> categorias = new ArrayList<>();
   private static Long idCounter = 1L;
 
   public ProductoService() {
+  }
+
+  public List<String> obtenerCategorias() {
+    return categorias;
   }
 
   //Obtener todos los productos
@@ -47,12 +52,8 @@ public class ProductoService {
         return "El producto " + nuevProducto.getName() + " ya existe.";
       }
     }
-    if (!esCategoriaValida(nuevProducto.getCategory())) {
-      return "Categoría no válida.";
-    }
-
-    if ("food".equalsIgnoreCase(nuevProducto.getCategory()) && nuevProducto.getExpirationDate() == null) {
-      return "Los productos de categoría food deben tener fecha de caducidad.";
+    if (!categorias.contains(nuevProducto.getCategory().toLowerCase())) {
+      categorias.add(nuevProducto.getCategory().toLowerCase());
     }
 
     if (nuevProducto.getCreationDate() == null) {
@@ -71,23 +72,14 @@ public class ProductoService {
   public String editarProducto(int id, Producto productoActualizado) {
     for (Producto producto : productos) {
       if (producto.getId() == id) {
-        //validación de caducidad en food
-        if ("food".equalsIgnoreCase(productoActualizado.getCategory())) {
-          if (productoActualizado.getExpirationDate() == null) {
-            return "El producto categoría food debe tener fecha de caducidad";
-          }
-          producto.setName(productoActualizado.getName());
-          producto.setCategory(productoActualizado.getCategory());
-          producto.setQuantityInStock(productoActualizado.getQuantityInStock());
-          producto.setUnitPrice(productoActualizado.getUnitPrice());
-          producto.setExpirationDate(productoActualizado.getExpirationDate());
-        } else {
-          producto.setName(productoActualizado.getName());
-          producto.setCategory(productoActualizado.getCategory());
-          producto.setQuantityInStock(productoActualizado.getQuantityInStock());
-          producto.setUnitPrice(productoActualizado.getUnitPrice());
-          producto.setExpirationDate(null);
+        if (!categorias.contains(productoActualizado.getCategory().toLowerCase())) {
+          categorias.add(productoActualizado.getCategory().toLowerCase());
         }
+        producto.setName(productoActualizado.getName());
+        producto.setCategory(productoActualizado.getCategory());
+        producto.setQuantityInStock(productoActualizado.getQuantityInStock());
+        producto.setUnitPrice(productoActualizado.getUnitPrice());
+        producto.setExpirationDate(productoActualizado.getExpirationDate());
         producto.setUpdateDate(LocalDate.now());
         return "Producto actualizado correctamente.";
       }
@@ -208,11 +200,5 @@ public class ProductoService {
 
       metrics.add(metricaGlobal);
       return metrics;
-  }
-
-  private boolean esCategoriaValida(String categoria) {
-    return "food".equalsIgnoreCase(categoria) ||
-    "electronics".equalsIgnoreCase(categoria) ||
-    "clothing".equalsIgnoreCase(categoria);
   }
 }
