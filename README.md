@@ -36,6 +36,6 @@ Este es el repositorio del backend de la aplicación de administración de inven
 ## 📌 Notas Adicionales
 - Asegúrate de que el frontend esté configurado para apuntar a la URL correcta del backend.
 - El frontend que consume esta API se encuentra en:
- ```sh
+  ```sh
   https://github.com/SamBSalgado/Inventory_Manager.git
   ```
